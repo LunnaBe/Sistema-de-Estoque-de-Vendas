@@ -22,7 +22,7 @@ var estoqueData = new
         Data_Saida = $"Data de Saída: {DateTime.Now.AddDays(30)}"
     };
    
-    var response = await http.PostAsJsonAsync("http://localhost:5000/api/estoque", estoqueData);
+    var response = await http.PostAsJsonAsync("http://localhost:7101/api/estoque", estoqueData);
     if (!response.IsSuccessStatusCode)
     {
         var erro = await response.Content.ReadAsStringAsync();
