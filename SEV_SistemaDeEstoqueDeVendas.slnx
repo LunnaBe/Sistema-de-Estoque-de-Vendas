@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ApiVendas/ApiVendas.csproj" />
+  <Project Path="EstoqueInterface/EstoqueInterface.csproj" />
+  <Project Path="EstoqueSimulator/EstoqueSimulator.csproj" />
+  <Project Path="Shared/Shared.csproj" />
+</Solution>
