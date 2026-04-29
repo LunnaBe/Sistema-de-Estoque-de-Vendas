@@ -93,12 +93,6 @@ namespace ApiVendas.Controllers
             }
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         /// <summary>
         /// GET: api/v1/estoque - Retorna uma lista de produtos de um estoque cadastrados no banco de dados
@@ -110,11 +104,18 @@ namespace ApiVendas.Controllers
         /// Observação: O endpoint deve retornar uma lista de valores, 
         /// ou um status de erro apropriado se nenhum valor for encontrado ou se a requisição for inválida.
         /// </remarks>
+        /// 
         /// <response code="200">Leituras dos produtos encontradas com sucesso</response>
         /// <response code="204">Nenhum dado de produto disponível no momento</response>
         /// <response code="400">Requisição inválida ou parâmetros malformados</response>
         /// <response code="404">Nenhum registro de produto encontrado</response>
         /// <response code="500">Erro interno do servidor</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult ListarEstoque()
         {
             try
