@@ -1,5 +1,8 @@
 using ApiVendas.Config;
 using ApiVendas.Data;
+using ApiVendas.Repositories;
+using ApiVendas.Repositories.Interfaces;
+using ApiVendas.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //injeção de dependência para configuração
 builder.Services.Configure<ApiConfig>(
     builder.Configuration.GetSection("ApiConfig"));
+
+// Configuração de injeção de dependência para os repositórios e serviços
+builder.Services.AddScoped<IEstoqueRepository, EstoqueRepository>();
+builder.Services.AddScoped<EstoqueService>();
 
 var app = builder.Build();
 
