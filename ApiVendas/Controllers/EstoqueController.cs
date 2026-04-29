@@ -1,5 +1,6 @@
 ﻿using ApiVendas.Config;
 using ApiVendas.Data;
+using ApiVendas.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Shared;
