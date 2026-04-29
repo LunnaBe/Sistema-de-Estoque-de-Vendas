@@ -1,7 +1,9 @@
 ﻿using ApiVendas.Config;
 using ApiVendas.Data;
+using ApiVendas.Models;
 using ApiVendas.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Options;
 using Shared;
 
@@ -59,7 +61,20 @@ namespace ApiVendas.Controllers
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
 
-                return Ok(_context.Estoque);
+                var cursos = await _service.Listar();
+
+                var dtos = cursos.Select(estoque => new EstoqueDataDTO
+                {
+                    Id = estoque.Id,
+                    Codigo_Fornecedor = estoque.Codigo_Fornecedor,
+                    Nome_Produto = estoque.Nome_Produto,
+                    Quantidade = estoque.Quantidade,
+                    Preco = estoque.Preco,
+                    Data_Entrada = estoque.Data_Entrada,
+                    Data_Saida = estoque.Data_Saida
+                });
+
+                return Ok(dtos);
 
             }
             catch (Exception ex)
@@ -99,6 +114,17 @@ namespace ApiVendas.Controllers
             {
                 var produto = await _service.ObterPorId(id);
 
+                var dtos = new EstoqueDataDTO
+                {
+                    Id = produto.Id,
+                    Codigo_Fornecedor = produto.Codigo_Fornecedor,
+                    Nome_Produto = produto.Nome_Produto,
+                    Quantidade = produto.Quantidade,
+                    Preco = produto.Preco,
+                    Data_Entrada = produto.Data_Entrada,
+                    Data_Saida = produto.Data_Saida
+                };
+
                 if (id <= 0)
                 {
                     return BadRequest("Id deve ser um número inteiro positivo.");
@@ -107,17 +133,13 @@ namespace ApiVendas.Controllers
                 {
                     return BadRequest("Os parâmetros da requisição são inválidos.");
                 }
-                if (_context.Estoque == null)
-                {
-                    return NotFound("Nenhum produto foi encontrado no estoque.");
-                }
 
                 if (produto == null)
                 {
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
 
-                return Ok(produto);
+                return Ok(new { mensagem = "Produto encontrado com sucesso!", dados = dtos });
             }
             catch (Exception ex)
             {
@@ -163,22 +185,32 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CriarProduto([FromBody] EstoqueData produto)
+        public async Task<IActionResult> CriarProduto([FromBody] EstoqueDataDTO dto)
         {
             try
             {
+                var estoque = new EstoqueData
+                {
+                    Id = dto.Id,
+                    Codigo_Fornecedor = dto.Codigo_Fornecedor,
+                    Nome_Produto = dto.Nome_Produto,
+                    Quantidade = dto.Quantidade,
+                    Preco = dto.Preco,
+                    Data_Entrada = dto.Data_Entrada,
+                    Data_Saida = dto.Data_Saida
+                };
 
-                if (produto.Quantidade > _config.Value.MaxQuantidade)
+                if (dto.Quantidade > _config.Value.MaxQuantidade)
                 {
                     return BadRequest("Quantidade acima do máximo permitido!");
                 }
 
-                if (produto.Quantidade < _config.Value.LimiteQuantidade)
+                if (dto.Quantidade < _config.Value.LimiteQuantidade)
                 {
                     return BadRequest("Quantidade abaixo do limite permitido!");
                 }
 
-                if (produto.Id <= 0)
+                if (dto.Id <= 0)
                 {
                     return BadRequest("Id deve ser um número inteiro positivo.");
                 }
@@ -187,13 +219,13 @@ namespace ApiVendas.Controllers
                 {
                     return BadRequest("Os parâmetros da requisição são inválidos.");
                 }
-                if (produto == null)
+                if (dto == null)
                 {
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
-                _context.Estoque.Add(produto);
-                _context.SaveChanges();
-                return Ok(produto);
+
+                await _service.Criar(estoque);
+                return CreatedAtAction(nameof(GetById), new { id = estoque.Id }, estoque);
             }
             catch (Exception ex)
             {
@@ -231,10 +263,21 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AtualizarProduto(int id, [FromBody] EstoqueData produto)
+        public async Task<IActionResult> AtualizarProduto(int id, [FromBody] EstoqueDataDTO dto)
         {
             try
             {
+                var estoque = await _service.ObterPorId(id);
+
+                estoque.Id = dto.Id;
+                estoque.Codigo_Fornecedor = dto.Codigo_Fornecedor;
+                estoque.Nome_Produto = dto.Nome_Produto;
+                estoque.Quantidade = dto.Quantidade;
+                estoque.Preco = dto.Preco;
+                estoque.Data_Entrada = dto.Data_Entrada;
+                estoque.Data_Saida = dto.Data_Saida;
+
+
                 if (id <= 0)
                 {
                     return BadRequest("Id deve ser um número inteiro positivo.");
@@ -244,13 +287,13 @@ namespace ApiVendas.Controllers
                 {
                     return BadRequest("Os parâmetros da requisição são inválidos.");
                 }
-                if (produto == null)
+                if (dto == null)
                 {
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
 
-                await _service.Atualizar(produto);
-                return Ok(_context.Estoque);
+                await _service.Atualizar(estoque);
+                return Ok(new { mensagem = "Produto do estoque atualizado com sucesso!", dados = estoque });
 
             }
             catch (Exception ex)
@@ -298,7 +341,13 @@ namespace ApiVendas.Controllers
                 {
                     return BadRequest("Os parâmetros da requisição são inválidos.");
                 }
-                if (_context.Estoque == null)
+
+                if(id < 0)
+                {
+                    return BadRequest("Id deve ser um número inteiro positivo.");
+                }
+
+                if (produtoExistente == null)
                 {
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
