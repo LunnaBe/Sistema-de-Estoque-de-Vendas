@@ -9,12 +9,12 @@ namespace Shared
 {
     public class EstoqueData
     {
-        public int Id { get; set; }
-        public string Codigo_Fornecedor { get; set; }
-        public string Nome_Produto { get; set; }
-        public int Quantidade { get; set; }
-        public double Preco { get; set; }
-        public DateTime Data_Entrada { get; set; }
-        public DateTime Data_Saida { get; set; }
+        public required int Id { get; set; }
+        public required string Codigo_Fornecedor { get; set; }
+        public required string Nome_Produto { get; set; }
+        public required int Quantidade { get; set; }
+        public required double Preco { get; set; }
+        public required DateTime Data_Entrada { get; set; }
+        public required DateTime Data_Saida { get; set; }
     }
 }
