@@ -18,8 +18,8 @@ namespace ApiVendas.Repositories
         /// Construtor da classe - recebeu o contexto do banco de dados 
         /// </summary>
         /// <param name="context"></param>"
-        public EstoqueRepository(AppDbContext context) 
-        { 
+        public EstoqueRepository(AppDbContext context)
+        {
             _context = context;
         }
 
@@ -45,7 +45,7 @@ namespace ApiVendas.Repositories
         /// </summary>
         /// <param name="produto"></param>
         /// <returns></returns>
-        public async Task Add(EstoqueData produto) 
+        public async Task Add(EstoqueData produto)
         {
             _context.Estoque.Add(produto);
             await _context.SaveChangesAsync();
@@ -95,19 +95,14 @@ namespace ApiVendas.Repositories
                 if (produto_existe == null)
                     throw new Exception("Nenhum produto foi encontrado no estoque.");
 
-                _context.Estoque.Remove(p);
+                _context.Estoque.Remove(produto_existe);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception("Ocorreu um erro interno no banco de dados.");
             }
         }
-
-        
-
-        
-
         
     }
 }

@@ -44,7 +44,7 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult ListarEstoque()
+        public async Task<IActionResult> ListarEstoque()
         {
             try
             {
@@ -102,7 +102,7 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CriarProduto([FromBody] EstoqueData produto)
+        public async Task<IActionResult> CriarProduto([FromBody] EstoqueData produto)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult AtualizarProduto(int id, [FromBody] EstoqueData produto)
+        public async Task<IActionResult> AtualizarProduto(int id, [FromBody] EstoqueData produto)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace ApiVendas.Controllers
                     return NotFound("Nenhum produto foi encontrado no estoque.");
                 }
 
-                _service.Atualizar(id);
+                await _service.Atualizar(id);
                 return Ok(_context.Estoque);
 
             }
@@ -218,10 +218,11 @@ namespace ApiVendas.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult RemoverProduto(int id, [FromBody] EstoqueData produto)
+        public async Task<IActionResult> DeletarProduto(int id, [FromBody] EstoqueData produto)
         {
             try
             {
+                var produtoExistente = await _context.Estoque.Obter(id);
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Os parâmetros da requisição são inválidos.");
