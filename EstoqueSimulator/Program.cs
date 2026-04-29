@@ -36,7 +36,8 @@ while (true)
         }
         else
         {
-            Console.WriteLine($"Dados enviados: {estoque.Codigo_Fornecedor}, {estoque.Nome_Produto}, {estoque.Quantidade}, {estoque.Preco}, {estoque.Data_Entrada}, {estoque.Data_Saida}");
+            Console.WriteLine($"Dados enviados: \n Código do Fornecedor: {estoque.Codigo_Fornecedor}, \n Nome do Produto: {estoque.Nome_Produto}, \n " +
+                $"Quantidade: {estoque.Quantidade}, \n Preço: {estoque.Preco}, \n Data de Entrada: {estoque.Data_Entrada}, \n Data de Saída: {estoque.Data_Saida}");
         }
 
     }
