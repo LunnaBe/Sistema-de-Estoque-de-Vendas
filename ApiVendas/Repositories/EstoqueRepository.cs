@@ -1,6 +1,6 @@
 ﻿namespace ApiVendas.Repositories
 {
-    public class EstoqueRepository
+    public class EstoqueRepository 
     {
     }
 }
