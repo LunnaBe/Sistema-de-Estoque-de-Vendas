@@ -69,6 +69,64 @@ namespace ApiVendas.Controllers
         }
 
         /// <summary>
+        /// GET: api/v1/estoque/{id} - Retorna um produto específico do estoque por ID
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Retorna um produto específico do estoque com base no ID fornecido.
+        /// </remarks>
+        /// 
+        /// <param name="id"></param>
+        /// 
+        /// <returns></returns>
+        /// 
+        /// <response code="200">Produto encontrado com sucesso</response>
+        /// <response code="204">Nenhum dado de produto disponível no momento</response>
+        /// <response code="400">Requisição inválida ou parâmetros malformados</response>
+        /// <response code="404">Nenhum registro de produto encontrado</response>
+        /// <response code="409">Conflito ao processar os dados dos produtos</response>
+        /// <response code="500">Erro interno do servidor</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var produto = await _service.ObterPorId(id);
+
+                if (id <= 0)
+                {
+                    return BadRequest("Id deve ser um número inteiro positivo.");
+                }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Os parâmetros da requisição são inválidos.");
+                }
+                if (_context.Estoque == null)
+                {
+                    return NotFound("Nenhum produto foi encontrado no estoque.");
+                }
+
+                if (produto == null)
+                {
+                    return NotFound("Nenhum produto foi encontrado no estoque.");
+                }
+
+                return Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocorreu um erro interno no banco de dados.");
+            }
+
+        }
+
+        /// <summary>
         /// POST: api/v1/estoque - Cria um novo produto do estoque no banco de dados
         /// </summary>
         /// 
@@ -143,63 +201,6 @@ namespace ApiVendas.Controllers
             }
         }
 
-        /// <summary>
-        /// GET: api/v1/estoque/{id} - Retorna um produto específico do estoque por ID
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Retorna um produto específico do estoque com base no ID fornecido.
-        /// </remarks>
-        /// 
-        /// <param name="id"></param>
-        /// 
-        /// <returns></returns>
-        /// 
-        /// <response code="200">Produto encontrado com sucesso</response>
-        /// <response code="204">Nenhum dado de produto disponível no momento</response>
-        /// <response code="400">Requisição inválida ou parâmetros malformados</response>
-        /// <response code="404">Nenhum registro de produto encontrado</response>
-        /// <response code="409">Conflito ao processar os dados dos produtos</response>
-        /// <response code="500">Erro interno do servidor</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                var produto = await _service.ObterPorId(id);
-
-                if (id <= 0)
-                {
-                    return BadRequest("Id deve ser um número inteiro positivo.");
-                }
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Os parâmetros da requisição são inválidos.");
-                }
-                if (_context.Estoque == null)
-                {
-                    return NotFound("Nenhum produto foi encontrado no estoque.");
-                }
-
-                if (produto == null)
-                {
-                    return NotFound("Nenhum produto foi encontrado no estoque.");
-                }
-
-                return Ok(produto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Ocorreu um erro interno no banco de dados.");
-            }
-            
-        }
 
         /// <summary>
         /// PUT: api/v1/estoque/{id} - Atualiza um produto do estoque pelo ID

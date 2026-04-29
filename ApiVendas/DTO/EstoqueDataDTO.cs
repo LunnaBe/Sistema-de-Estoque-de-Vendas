@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared
+﻿namespace ApiVendas.Models
 {
-    public class EstoqueData
+    public class EstoqueDataDTO
     {
         public int Id { get; set; }
         public string Codigo_Fornecedor { get; set; }

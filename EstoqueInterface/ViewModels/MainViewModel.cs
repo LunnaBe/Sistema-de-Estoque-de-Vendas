@@ -28,7 +28,7 @@ namespace EstoqueInterface.ViewModels
             var http = new HttpClient();
 
             var dados = await http.GetFromJsonAsync<List<EstoqueData>>(
-                "http://localhost:7101/api/estoque");
+                "https://localhost:7101/api/v1/estoque");
 
             foreach (var item in dados)
             {
