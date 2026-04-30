@@ -9,26 +9,28 @@ using System.Threading.Tasks;
 
 namespace EstoqueInterface.Repositories
 {
-    internal class EstoqueRepository
+    public class EstoqueRepository
     {
         // Método para inserir dados na tabela Estoque
         public void InserirDados(EstoqueDataDTO estoqueData)
         {
-            //pegando a conexão com o banco de dados
             using var conn = Database.GetConnection();
-            conn.Open(); //Abrindo a conexão
 
-            //passando parametros para o comando
-            var cmd = new SqliteCommand(
-            @"INSERT INTO Estoque (codigo_fornecedor, nome_produto, quantidade, preço, data_entrada, data_saida)", conn);
+            // Comando SQL para inserir dados. 
+            var sql = @"INSERT INTO Estoque 
+                (Codigo_Fornecedor, Nome_Produto, Quantidade, Preco, Data_Entrada, Data_Saida) 
+                VALUES 
+                (@codigoFornecedor, @nome, @quantidade, @preco, @dataEntrada, @dataSaida)";
 
-            // Parâmetros para evitar SQL Injection
+            using var cmd = new SqliteCommand(sql, conn);
+
+            // Adiciona os parâmetros para evitar SQL Injection
             cmd.Parameters.AddWithValue("@codigoFornecedor", estoqueData.Codigo_Fornecedor);
             cmd.Parameters.AddWithValue("@nome", estoqueData.Nome_Produto);
             cmd.Parameters.AddWithValue("@quantidade", estoqueData.Quantidade);
             cmd.Parameters.AddWithValue("@preco", estoqueData.Preco);
-            cmd.Parameters.AddWithValue("@dataEntrada", estoqueData.Data_Entrada.ToString("s"));
-            cmd.Parameters.AddWithValue("@dataSaida", estoqueData.Data_Saida.ToString("s"));
+            cmd.Parameters.AddWithValue("@dataEntrada", estoqueData.Data_Entrada.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@dataSaida", estoqueData.Data_Saida.ToString("yyyy-MM-dd HH:mm:ss"));
 
             cmd.ExecuteNonQuery();
         }
@@ -40,20 +42,19 @@ namespace EstoqueInterface.Repositories
             using var conn = Database.GetConnection();
             conn.Open();
 
-            var cmd = new SqliteCommand("SELECT id, codigo_fornecedor, nome_produto, quantidade, preço, data_entrada, data_saida FROM Estoque", conn);
+            var cmd = new SqliteCommand("SELECT codigo_fornecedor, nome_produto, quantidade, preço, data_entrada, data_saida FROM Estoque", conn);
             var reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 var item = new EstoqueDataDTO
                 {
-                    Id = reader.GetInt32(0),
-                    Codigo_Fornecedor = reader.GetString(1),
-                    Nome_Produto = reader.GetString(2),
-                    Quantidade = reader.GetInt32(3),
-                    Preco = reader.GetDouble(4),
-                    Data_Entrada = DateTime.Parse(reader.GetString(5)),
-                    Data_Saida = DateTime.Parse(reader.GetString(6))
+                    Codigo_Fornecedor = reader.GetString(0),
+                    Nome_Produto = reader.GetString(1),
+                    Quantidade = reader.GetInt32(2),
+                    Preco = reader.GetDouble(3),
+                    Data_Entrada = DateTime.Parse(reader.GetString(4)),
+                    Data_Saida = DateTime.Parse(reader.GetString(5))
                 };
                 lista.Add(item);
             }

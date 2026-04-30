@@ -1,7 +1,12 @@
-﻿namespace ApiVendas.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ApiVendas.Models
 {
     public class EstoqueDataDTO
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Codigo_Fornecedor { get; set; }
         public string Nome_Produto { get; set; }

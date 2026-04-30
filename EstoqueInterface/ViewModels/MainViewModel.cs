@@ -14,14 +14,24 @@ using System.Windows.Input;
 
 namespace EstoqueInterface.ViewModels
 {
-    internal class MainViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<EstoqueData> Itens { get; set; }
+        public ObservableCollection<string> CodigoFornecedor { get; set; }
+        public ObservableCollection<string> NomeProduto { get; set; }
+        public ObservableCollection<int> Quantidade { get; set; }
+        public ObservableCollection<double> Preco { get; set; }
+        public ObservableCollection<DateTime> DataEntrada { get; set; }
+        public ObservableCollection<DateTime> DataSaida{ get; set; }
         public ICommand SalvarCommand { get; set; }
 
         public MainViewModel()
         {
-            Itens = new ObservableCollection<EstoqueData>();
+            CodigoFornecedor = new ObservableCollection<string>();
+            NomeProduto = new ObservableCollection<string>();
+            Quantidade = new ObservableCollection<int>();
+            Preco = new ObservableCollection<double>();
+            DataEntrada = new ObservableCollection<DateTime>();
+            DataSaida = new ObservableCollection<DateTime>();
             SalvarCommand = new RelayCommand(Salvar);
         }
 
@@ -36,10 +46,22 @@ namespace EstoqueInterface.ViewModels
 
                 if (dados != null)
                 {
-                    Itens.Clear();
+                    CodigoFornecedor.Clear();
+                    NomeProduto.Clear();
+                    Quantidade.Clear();
+                    Preco.Clear();
+                    DataEntrada.Clear();
+                    DataSaida.Clear();
+
                     foreach (var item in dados)
                     {
-                        Itens.Add(item);
+                        CodigoFornecedor.Add(item.Codigo_Fornecedor);
+                        NomeProduto.Add(item.Nome_Produto);
+                        Quantidade.Add(item.Quantidade);
+                        Preco.Add(item.Preco);
+                        DataEntrada.Add(item.Data_Entrada);
+                        DataSaida.Add(item.Data_Saida);
+
                     }
                 }
             }

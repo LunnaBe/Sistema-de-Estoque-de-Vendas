@@ -12,16 +12,23 @@
         <TabItem Header="Dados dos Produtos" >
             <StackPanel>
 
-                <TextBlock Text="Itens em Estoque:" Margin="6"></TextBlock>
-                <ScrollViewer Margin="6">
-                    <ListBox Margin="6" Height="210" ItemsSource="{Binding Itens}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding StringFormat={}{0}°C}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </ScrollViewer>
+                <TextBlock Text="Código Fornecedor:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding CodigoFornecedor}" />
+
+                <TextBlock Text="Produto:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding NomeProduto}" />
+
+                <TextBlock Text="Quantidade:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding Quantidade}" />
+
+                <TextBlock Text="Preço:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding Preco}" />
+
+                <TextBlock Text="Data Entrada:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding DataEntrada}" />
+
+                <TextBlock Text="Data Saida:" Margin="6"></TextBlock>
+                <TextBox Text="{Binding DataSaida}" />
 
                 <Button Content="Salvar" Margin="6" Padding="8" Command="{Binding SalvarCommand}" />
 
