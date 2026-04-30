@@ -64,7 +64,7 @@ namespace EstoqueInterface.Context
             ProductVersion TEXT NOT NULL
         );
 
-        CREATE TABLE __EFMigrationsLock (
+        CREATE TABLE IF NOT EXISTS __EFMigrationsLock (
             Id INTEGER NOT NULL
                               CONSTRAINT PK___EFMigrationsLock PRIMARY KEY,
             Timestamp TEXT NOT NULL
