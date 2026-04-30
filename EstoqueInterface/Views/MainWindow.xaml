@@ -7,28 +7,28 @@
         mc:Ignorable="d"
         Title="Interface de Estoque de Vendas" Height="450" Width="800">
 
-    <TabControl>
+    <TabControl Margin="0,0,0,-123">
 
         <TabItem Header="Dados dos Produtos" >
-            <StackPanel>
+            <StackPanel Height="530">
 
                 <TextBlock Text="Código Fornecedor:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding CodigoFornecedor}" />
+                <TextBox Text="{Binding CodigoFornecedor}" Margin="6" Padding="8"/>
 
                 <TextBlock Text="Produto:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding NomeProduto}" />
+                <TextBox Text="{Binding NomeProduto}" Margin="6" Padding="8"/>
 
                 <TextBlock Text="Quantidade:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding Quantidade}" />
+                <TextBox Text="{Binding Quantidade}" Margin="6" Padding="8"/>
 
-                <TextBlock Text="Preço:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding Preco}" />
+                <TextBlock Text="Preço: (R$)" Margin="6"></TextBlock>
+                <TextBox Text="{Binding Preco}" Margin="6" Padding="8"/>
 
-                <TextBlock Text="Data Entrada:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding DataEntrada}" />
+                <TextBlock Text="Data Entrada: (dd/MM/yyyy)" Margin="6"></TextBlock>
+                <TextBox Text="{Binding DataEntrada}" Margin="6" Padding="8"/>
 
-                <TextBlock Text="Data Saida:" Margin="6"></TextBlock>
-                <TextBox Text="{Binding DataSaida}" />
+                <TextBlock Text="Data Saida: (dd/MM/yyyy)" Margin="6"></TextBlock>
+                <TextBox Text="{Binding DataSaida}" Margin="6" Padding="8"/>
 
                 <Button Content="Salvar" Margin="6" Padding="8" Command="{Binding SalvarCommand}" />
 
