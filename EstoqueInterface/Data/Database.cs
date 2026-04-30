@@ -17,6 +17,17 @@ namespace EstoqueInterface.Context
         private static readonly string dbPath =
          Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "estoqueWPF.db");
 
+        static Database()
+        {
+            // Verificar se o banco de dados e a pasta existe
+            var pastaBase = Path.GetDirectoryName(dbPath);
+            if (!Directory.Exists(pastaBase))
+                Directory.CreateDirectory(pastaBase);
+            if (!File.Exists(dbPath))
+                MessageBox.Show("Banco de dados inexistente!!!");
+        }
+
+
         // Método que cria e abre uma conexão com o SQLite
         public static SqliteConnection GetConnection()
         {
