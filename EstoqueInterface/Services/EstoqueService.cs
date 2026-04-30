@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ApiVendas.Models;
+using EstoqueInterface.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,6 @@ namespace EstoqueInterface.Services
 {
     internal class EstoqueService
     {
+        
     }
 }
