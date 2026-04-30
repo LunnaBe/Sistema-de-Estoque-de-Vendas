@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EstoqueInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Interface de Estoque de Vendas" Height="450" Width="800">
 
-    </Grid>
+    <TabControl>
+
+        <TabItem Header="Dados dos Produtos" >
+            <StackPanel>
+
+                <TextBlock Text="Itens em Estoque:" Margin="6"></TextBlock>
+                <ScrollViewer Margin="6">
+                    <ListBox Margin="6" Height="210" ItemsSource="{Binding Itens}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StringFormat={}{0}°C}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+
+                <Button Content="Salvar" Margin="6" Padding="8" Command="{Binding SalvarCommand}" />
+
+            </StackPanel>
+        </TabItem>
+
+    </TabControl>
 </Window>
