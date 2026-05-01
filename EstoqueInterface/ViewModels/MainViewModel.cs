@@ -108,7 +108,7 @@ namespace EstoqueInterface.ViewModels
 
                 
 
-                if (response.IsSuccessStatusCode)
+                if (response != null)
                 {
                     LimparCampos();
                 }
