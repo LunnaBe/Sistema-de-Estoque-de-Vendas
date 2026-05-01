@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EstoqueInterface"
         mc:Ignorable="d"
-        Title="Interface de Estoque de Vendas" Height="450" Width="800">
+        Title="Interface de Estoque de Vendas" Height="570" Width="800">
 
-    <TabControl Margin="0,0,0,-123">
+    <TabControl>
 
-        <TabItem Header="Dados dos Produtos" >
-            <StackPanel Height="530">
+        <TabItem Header="Dados dos Produtos">
+            <StackPanel Height="651">
 
                 <TextBlock Text="Código Fornecedor:" Margin="6"></TextBlock>
                 <TextBox Text="{Binding CodigoFornecedor}" Margin="6" Padding="8"/>

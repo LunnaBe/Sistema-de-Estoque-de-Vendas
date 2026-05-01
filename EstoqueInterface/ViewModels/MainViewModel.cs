@@ -1,4 +1,5 @@
-﻿using EstoqueInterface.Commands;
+﻿using ApiVendas.Models;
+using EstoqueInterface.Commands;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -10,66 +11,120 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace EstoqueInterface.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<string> CodigoFornecedor { get; set; }
-        public ObservableCollection<string> NomeProduto { get; set; }
-        public ObservableCollection<int> Quantidade { get; set; }
-        public ObservableCollection<double> Preco { get; set; }
-        public ObservableCollection<DateTime> DataEntrada { get; set; }
-        public ObservableCollection<DateTime> DataSaida{ get; set; }
+        // Propriedades para os campos do formulário
+        private string _codigoFornecedor;
+        public string CodigoFornecedor
+        {
+            get => _codigoFornecedor;
+            set
+            {
+                _codigoFornecedor = value; OnPropertyChanged(nameof(CodigoFornecedor));
+            }
+        }
+
+        private string _nomeProduto;
+        public string NomeProduto
+        {
+            get => _nomeProduto;
+            set
+            {
+                _nomeProduto = value; OnPropertyChanged(nameof(NomeProduto));
+            }
+        }
+
+        private int _quantidade;
+        public int Quantidade
+        {
+            get => _quantidade;
+            set
+            {
+                _quantidade = value; OnPropertyChanged(nameof(Quantidade));
+            }
+        }
+
+        private double _preco;
+        public double Preco
+        {
+            get => _preco;
+            set
+            {
+                _preco = value; OnPropertyChanged(nameof(Preco));
+            }
+        }
+
+        private DateTime _dataEntrada;
+        public DateTime DataEntrada
+        {
+            get => _dataEntrada;
+            set
+            {
+                _dataEntrada = value; OnPropertyChanged(nameof(DataEntrada));
+            }
+        }
+
+        private DateTime _dataSaida;
+        public DateTime DataSaida
+        {
+            get => _dataSaida;
+            set
+            {
+                _dataSaida = value; OnPropertyChanged(nameof(DataSaida));
+            }
+        }
+
         public ICommand SalvarCommand { get; set; }
 
         public MainViewModel()
         {
-            CodigoFornecedor = new ObservableCollection<string>();
-            NomeProduto = new ObservableCollection<string>();
-            Quantidade = new ObservableCollection<int>();
-            Preco = new ObservableCollection<double>();
-            DataEntrada = new ObservableCollection<DateTime>();
-            DataSaida = new ObservableCollection<DateTime>();
             SalvarCommand = new RelayCommand(Salvar);
         }
 
-        private async void Salvar()
+        public async void Salvar()
         {
             try
             {
                 var http = new HttpClient();
 
-                var dados = await http.GetFromJsonAsync<List<EstoqueData>>(
-                    "https://localhost:7101/api/v1/estoque");
-
-                if (dados != null)
+                // Criar um objeto DTO com os dados do formulário
+                var novoProduto = new EstoqueDataDTO
                 {
-                    CodigoFornecedor.Clear();
-                    NomeProduto.Clear();
-                    Quantidade.Clear();
-                    Preco.Clear();
-                    DataEntrada.Clear();
-                    DataSaida.Clear();
+                    Codigo_Fornecedor = CodigoFornecedor,
+                    Nome_Produto = NomeProduto,
+                    Quantidade = Quantidade,
+                    Preco = Preco,
+                    Data_Entrada = DataEntrada,
+                    Data_Saida = DataSaida,
+                };
 
-                    foreach (var item in dados)
-                    {
-                        CodigoFornecedor.Add(item.Codigo_Fornecedor);
-                        NomeProduto.Add(item.Nome_Produto);
-                        Quantidade.Add(item.Quantidade);
-                        Preco.Add(item.Preco);
-                        DataEntrada.Add(item.Data_Entrada);
-                        DataSaida.Add(item.Data_Saida);
+                // Enviar os dados para a API
+                var response = await http.PostAsJsonAsync("https://localhost:7101/api/v1/estoque", novoProduto);
 
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    LimparCampos();
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Erro ao buscar dados: {ex.Message}");
+                MessageBox.Show("Ocorreu um erro ao salvar os dados. Por favor, tente novamente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        private void LimparCampos()
+        {
+            CodigoFornecedor = string.Empty;
+            NomeProduto = string.Empty;
+            Quantidade = 0;
+            Preco = 0;
+            DataEntrada = DateTime.Now;
+            DataSaida = DateTime.Now;
+        }
     }
 }
