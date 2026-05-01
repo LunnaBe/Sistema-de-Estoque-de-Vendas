@@ -16,7 +16,7 @@ namespace EstoqueInterface.Context
     {
         // Define o caminho do banco de dados
         private static readonly string dbPath =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "estoqueWPF.db");
+     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "estoqueWPF.db");
 
         // Método que cria e abre uma conexão com o SQLite
         public static SqliteConnection GetConnection()
@@ -37,7 +37,7 @@ namespace EstoqueInterface.Context
                 // Script do SQLite
                 cmd.CommandText = @"
             PRAGMA foreign_keys = ON;
-            CREATE TABLE IF NOT EXISTS Estoque (
+            CREATE TABLE IF NOT EXISTS EstoqueData (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT, 
                 Codigo_Fornecedor TEXT NOT NULL,
                 Nome_Produto TEXT NOT NULL,
@@ -52,7 +52,6 @@ namespace EstoqueInterface.Context
             }
             catch (Exception ex)
             {
-                // Log ou rethrow para o OnStartup pegar
                 throw new Exception("Falha ao criar tabelas: " + ex.Message);
             }
         }

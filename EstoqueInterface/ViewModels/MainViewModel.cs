@@ -92,19 +92,21 @@ namespace EstoqueInterface.ViewModels
             {
                 var http = new HttpClient();
 
-                // Criar um objeto DTO com os dados do formulário
-                var novoProduto = new EstoqueDataDTO
-                {
-                    Codigo_Fornecedor = CodigoFornecedor,
-                    Nome_Produto = NomeProduto,
-                    Quantidade = Quantidade,
-                    Preco = Preco,
-                    Data_Entrada = DataEntrada,
-                    Data_Saida = DataSaida,
-                };
-
                 // Enviar os dados para a API
-                var response = await http.PostAsJsonAsync("https://localhost:7101/api/v1/estoque", novoProduto);
+                var response = await http.GetFromJsonAsync<List<EstoqueData>>(("https://localhost:7101/api/v1/estoque");
+
+                // Criar um objeto DTO com os dados do formulário
+                foreach (var itens in response)
+                {
+                    CodigoFornecedor = itens.Codigo_Fornecedor;
+                    NomeProduto = itens.Nome_Produto;
+                    Quantidade = itens.Quantidade;
+                    Preco = itens.Preco;
+                    DataEntrada = itens.Data_Entrada;
+                    DataSaida = itens.Data_Saida;
+                }
+
+                
 
                 if (response.IsSuccessStatusCode)
                 {

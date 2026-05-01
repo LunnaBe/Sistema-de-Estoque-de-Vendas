@@ -17,10 +17,8 @@ namespace EstoqueInterface.Repositories
             using var conn = Database.GetConnection();
 
             // Comando SQL para inserir dados. 
-            var sql = @"INSERT INTO Estoque 
-                (Codigo_Fornecedor, Nome_Produto, Quantidade, Preco, Data_Entrada, Data_Saida) 
-                VALUES 
-                (@codigoFornecedor, @nome, @quantidade, @preco, @dataEntrada, @dataSaida)";
+            var sql = @"INSERT INTO Estoque (Codigo_Fornecedor, Nome_Produto, Quantidade, Preco, Data_Entrada, Data_Saida) 
+                VALUES (@codigoFornecedor, @nome, @quantidade, @preco, @dataEntrada, @dataSaida)";
 
             using var cmd = new SqliteCommand(sql, conn);
 
@@ -40,7 +38,6 @@ namespace EstoqueInterface.Repositories
             var lista = new List<EstoqueDataDTO>();
 
             using var conn = Database.GetConnection();
-            conn.Open();
 
             var cmd = new SqliteCommand("SELECT codigo_fornecedor, nome_produto, quantidade, preço, data_entrada, data_saida FROM Estoque", conn);
             var reader = cmd.ExecuteReader();

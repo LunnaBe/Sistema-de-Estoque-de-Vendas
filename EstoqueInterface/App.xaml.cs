@@ -19,7 +19,6 @@ namespace EstoqueInterface
             {
                 Batteries.Init();
 
-                Database.Initialize();
             }
             catch (Exception ex)
             {

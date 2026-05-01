@@ -10,5 +10,6 @@ namespace ApiVendas.Data
         {
         }
 
+
     }
 }
