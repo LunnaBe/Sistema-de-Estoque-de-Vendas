@@ -93,7 +93,7 @@ namespace EstoqueInterface.ViewModels
                 var http = new HttpClient();
 
                 // Enviar os dados para a API
-                var response = await http.GetFromJsonAsync<List<EstoqueData>>(("https://localhost:7101/api/v1/estoque");
+                var response = await http.GetFromJsonAsync<List<EstoqueData>>(("https://localhost:7101/api/v1/estoque"));
 
                 // Criar um objeto DTO com os dados do formulário
                 foreach (var itens in response)
